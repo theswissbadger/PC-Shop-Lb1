@@ -20,9 +20,8 @@ public class Kunde {
     public Kunde() {
     }
 
-    public Kunde(ObjectId id, String kundenId, String geschlecht, String nachname, String vorname, String telefon, String email, String sprache, Date geburtsdatum, Adresse adresse) {
+    public Kunde(ObjectId id, String geschlecht, String nachname, String vorname, String telefon, String email, String sprache, Date geburtsdatum, Adresse adresse) {
         this.id = id;
-        this.kundenId = kundenId;
         this.geschlecht = geschlecht;
         this.nachname = nachname;
         this.vorname = vorname;
@@ -33,8 +32,7 @@ public class Kunde {
         this.adresse = adresse;
     }
 
-    public Kunde( String kundenId, String geschlecht, String nachname, String vorname, String telefon, String email, String sprache, Date geburtsdatum, Adresse adresse) {
-        this.kundenId = kundenId;
+    public Kunde(String geschlecht, String nachname, String vorname, String telefon, String email, String sprache, Date geburtsdatum, Adresse adresse) {
         this.geschlecht = geschlecht;
         this.nachname = nachname;
         this.vorname = vorname;

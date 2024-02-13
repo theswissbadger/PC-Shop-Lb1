@@ -31,7 +31,7 @@ public class KundenController {
                     displayAllCustomers();
                     break;
                 case 2:
-                    displayCustomerById();
+                    displayCustomerByIndex();
                     break;
                 case 3:
                     addNewCustomer();
@@ -68,6 +68,20 @@ public class KundenController {
         }
     }
 
+
+    private void displayCustomerByIndex(){
+        System.out.print("Geben Sie den Index an: ");
+        int index = scanner.nextInt();
+        Kunde kunde = kundenRepo.getByIndex(index);
+
+        if (kunde != null) {
+            System.out.println(kunde);
+        } else {
+            System.out.println("Kein Kunde mit dieser ID gefunden.");
+        }
+    }
+
+    /*
     private void displayCustomerById() {
         System.out.print("Geben Sie die Kunden-ID ein: ");
         String customerId = scanner.nextLine();
@@ -78,6 +92,8 @@ public class KundenController {
             System.out.println("Kein Kunde mit dieser ID gefunden.");
         }
     }
+
+     */
 
 
 
@@ -116,11 +132,9 @@ public class KundenController {
         // Adresse erstellen
         Adresse adresse = new Adresse(strasse, plz, ort);
 
-        // UUID für die Kunden-ID generieren
-        String kundenId = UUID.randomUUID().toString();
 
         // Kundenobjekt erstellen und hinzufügen
-        Kunde newCustomer = new Kunde(kundenId, geschlecht, nachname, vorname, telefon, email, sprache, geburtsdatum, adresse);
+        Kunde newCustomer = new Kunde(geschlecht, nachname, vorname, telefon, email, sprache, geburtsdatum, adresse);
         kundenRepo.insert(newCustomer);
         System.out.println("Neuer Kunde hinzugefügt.");
     }

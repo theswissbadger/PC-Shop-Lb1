@@ -44,11 +44,33 @@ public class DbAccess {
         collection.insertOne(doc);
     }
 
+
+    public Kunde getByIndex(int index) {
+        ArrayList<Kunde> kundenList = new ArrayList<>();
+        MongoCursor<Document> cursor = collection.find().iterator();
+        try {
+            int currentIndex = 0;
+            while (cursor.hasNext()) {
+                Document doc = cursor.next();
+                if (currentIndex == index) {
+                    return documentToKunde(doc);
+                }
+                currentIndex++;
+            }
+        } finally {
+            cursor.close();
+        }
+        return null; // Rückgabe null, wenn der Index nicht gefunden wird
+    }
+
+    /*
     public Kunde getById(String kundenId) {
         Document doc = collection.find(Filters.eq("kundenId", Integer.parseInt(kundenId))).first();
         if (doc == null) return null;
         return documentToKunde(doc);
     }
+    */
+     
 
 
     public ArrayList<Kunde> getAll() {
@@ -66,7 +88,7 @@ public class DbAccess {
     }
 
     public void update(Kunde kunde) {
-        Document doc = new Document("kundenId", kunde.getKundenId())
+        Document doc = new Document()
                 .append("geschlecht", kunde.getGeschlecht())
                 .append("nachname", kunde.getNachname())
                 .append("vorname", kunde.getVorname())
@@ -86,7 +108,6 @@ public class DbAccess {
 
     private Kunde documentToKunde(Document doc) {
         ObjectId id = doc.getObjectId("_id");
-        String kundenId = doc.getString("kundenId");
         String geschlecht = doc.getString("geschlecht");
         String nachname = doc.getString("nachname");
         String vorname = doc.getString("vorname");
@@ -101,6 +122,6 @@ public class DbAccess {
         String ort = adresseDoc.getString("ort");
         Adresse adresse = new Adresse(strasse, plz, ort);
 
-        return new Kunde(id, kundenId, geschlecht, nachname, vorname, telefon, email, sprache, geburtsdatum, adresse);
+        return new Kunde(id, geschlecht, nachname, vorname, telefon, email, sprache, geburtsdatum, adresse);
     }
 }

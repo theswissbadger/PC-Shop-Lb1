@@ -16,9 +16,16 @@ public class KundenRepo {
         dbAccess.insert(kunde);
     }
 
+    public Kunde getByIndex(int index){
+        return dbAccess.getByIndex(index);
+    }
+
+    /*
     public Kunde getById(String id) {
         return dbAccess.getById(id);
     }
+
+     */
 
     public ArrayList<Kunde> getAll() {
         return dbAccess.getAll();
