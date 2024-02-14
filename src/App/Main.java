@@ -1,10 +1,10 @@
 package App;
 
-import Controller.KundenController;
+import Controller.Controller;
 
 public class Main {
     public static void main(String[] args){
-        KundenController controller = new KundenController();
-        controller.start();
+        Controller controller = new Controller();
+        controller.printMenu();
     }
 }
