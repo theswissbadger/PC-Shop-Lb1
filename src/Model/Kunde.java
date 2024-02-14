@@ -55,7 +55,7 @@ public class Kunde {
         this.id = id;
     }
 
-    public Kunde(Integer kundenId, String geschlecht, String nachname, String vorname, String telefon, String email, String sprache, Date geburtsdatum) {
+    public Kunde(String geschlecht, String nachname, String vorname, String telefon, String email, String sprache, Date geburtsdatum) {
     }
 
 
@@ -64,13 +64,6 @@ public class Kunde {
         return "Kunde: " + vorname + " " + nachname + " identifiziert sich als: " + geschlecht + "\n----------------------------------------------------------------------";
     }
 
-    public String getKundenId() {
-        return kundenId;
-    }
-
-    public void setKundenId(String kundenId) {
-        this.kundenId = kundenId;
-    }
 
     public String getGeschlecht() {
         return geschlecht;

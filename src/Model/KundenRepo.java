@@ -1,16 +1,18 @@
 package Model;
 
 import DbAccess.DbAccess;
+import Interfaces.iKunde;
 
 import java.util.ArrayList;
 
-public class KundenRepo {
+public class KundenRepo implements iKunde {
     private DbAccess dbAccess;
 
     public KundenRepo() {
         this.dbAccess = new DbAccess();
         this.dbAccess.connectDb("PC-Shop", "Kunden");
     }
+
 
     public void insert(Kunde kunde) {
         dbAccess.insert(kunde);
@@ -31,11 +33,31 @@ public class KundenRepo {
         return dbAccess.getAll();
     }
 
+
+    @Override
+    public void delete(int index) {
+
+    }
+
+
+
     public void update(Kunde kunde) {
         dbAccess.update(kunde);
     }
 
-    public void delete(String id) {
-        dbAccess.delete(id);
+    public void deleteByIndex(int index) {
+        ArrayList<Kunde> kundenListe = dbAccess.getAll();
+        if (index >= 0 && index < kundenListe.size()) {
+            Kunde kundeToDelete = kundenListe.get(index);
+            // Löschen Sie den Kunden aus der Datenbank
+            dbAccess.delete(kundeToDelete.getId().toString());
+            // Entfernen Sie den Kunden aus der Liste
+            kundenListe.remove(index);
+            System.out.println("Kunde erfolgreich gelöscht.");
+        } else {
+            System.out.println("Ungültiger Index. Der Kunde konnte nicht gelöscht werden.");
+        }
     }
+
+
 }

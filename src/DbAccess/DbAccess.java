@@ -30,8 +30,7 @@ public class DbAccess {
     }
 
     public void insert(Kunde kunde) {
-        Document doc = new Document("kundenId", kunde.getKundenId())
-                .append("geschlecht", kunde.getGeschlecht())
+        Document doc = new Document("geschlecht", kunde.getGeschlecht())
                 .append("nachname", kunde.getNachname())
                 .append("vorname", kunde.getVorname())
                 .append("telefon", kunde.getTelefon())
