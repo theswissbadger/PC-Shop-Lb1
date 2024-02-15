@@ -49,9 +49,7 @@ public class DbAccess {
         collection.insertOne(doc);
     }
 
-
     public Kunde getByIndex(int index) {
-        ArrayList<Kunde> kundenList = new ArrayList<>();
         MongoCursor<Document> cursor = collection.find().iterator();
         try {
             int currentIndex = 0;
@@ -120,7 +118,7 @@ public class DbAccess {
         return new Kunde(id, geschlecht, nachname, vorname, telefon, email, sprache, geburtsdatum, adresse);
     }
 
-    // Methoden für Computer
+    // Methoden für Computer Klasse
     public void insert(Computer computer) {
         Document computerDoc = new Document("hersteller", computer.getHersteller())
                 .append("modell", computer.getModell())
@@ -176,9 +174,7 @@ public class DbAccess {
         return computerList;
     }
 
-
     public Computer getComputerByIndex(int index) {
-        ArrayList<Computer> computerList = new ArrayList<>();
         MongoCursor<Document> cursor = collection.find().iterator();
         try {
             int currentIndex = 0;
@@ -211,7 +207,6 @@ public class DbAccess {
                         .append("anzahlRJ45Ports", computer.getSchnittstelle().getAnzahlRJ45Ports()));
         collection.updateOne(Filters.eq("_id", computer.getId()), new Document("$set", doc));
     }
-
 
 }
 

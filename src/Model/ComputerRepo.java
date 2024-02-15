@@ -32,18 +32,12 @@ public class ComputerRepo implements iComputer {
     }
 
     @Override
-    public void delete(int computerId) {
-
-    }
-
     public void deleteComputerByIndex(int index) {
         ArrayList<Computer> computerList = dbAccess.getAllComputer();
         if (index >= 0 && index < computerList.size()) {
             Computer computerToDelete = computerList.get(index);
 
             dbAccess.deleteComputer(computerToDelete.getId());
-
-
             computerList.remove(index);
             System.out.println("Computer erfolgreich gelöscht.");
         } else {
