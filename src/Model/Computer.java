@@ -1,6 +1,9 @@
 package Model;
 
+import org.bson.types.ObjectId;
+
 public class Computer {
+    private ObjectId id;
     private int computerId;
     private String hersteller;
     private String modell;
@@ -12,8 +15,20 @@ public class Computer {
     private Schnittstelle schnittstelle;
     private Bestellposition bestellposition;
 
-    public Computer() {
+    public Computer(ObjectId id, String hersteller, String modell, String arbeitsspeicher, String cpu, String massenspeicher, String typ, double einzelpreis, Schnittstelle schnittstelle) {
+        this.id = id;
+        this.hersteller = hersteller;
+        this.modell = modell;
+        this.arbeitsspeicher = arbeitsspeicher;
+        this.cpu = cpu;
+        this.massenspeicher = massenspeicher;
+        this.typ = typ;
+        this.einzelpreis = einzelpreis;
+        this.schnittstelle = schnittstelle;
+
     }
+
+
 
     public Computer(String hersteller, String modell, String arbeitsspeicher, String cpu, String massenspeicher, String typ, double einzelpreis, Schnittstelle schnittstelle) {
         this.hersteller = hersteller;
@@ -39,6 +54,14 @@ public class Computer {
                 ;
     }
 
+
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
 
     public int getComputerId() {
         return computerId;

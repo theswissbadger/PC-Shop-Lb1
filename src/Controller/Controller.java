@@ -265,6 +265,7 @@ public class Controller {
                     break;
                 case 2:
                     // Computer via ID ausgeben
+                    displayComputerbyId();
                     break;
                 case 3:
                     // Methode Computer hinzufügen
@@ -273,9 +274,11 @@ public class Controller {
                     break;
                 case 4:
                     // Methode Computer aktualisieren
+                    updateComputer();
                     break;
                 case 5:
                     // Methode Computer löschen
+                    deleteComputer();
                     break;
                 case 6:
                     running = false;
@@ -337,6 +340,123 @@ public class Controller {
         for (Computer computer : computers) {
             System.out.println(computer);
         }
+    }
+
+    private void displayComputerbyId(){
+        System.out.print("Geben Sie den Index an: ");
+        int index = scanner.nextInt();
+        Computer computer = computerRepo.getComputerById(index);
+
+
+        if (computer != null) {
+            System.out.println(computer);
+        } else {
+            System.out.println("Keinen Computer mit dieser ID gefunden.");
+        }
+    }
+
+    private void updateComputer() {
+        System.out.print("Geben Sie die ID des Computers ein, den Sie aktualisieren möchten: ");
+        int computerId = scanner.nextInt();
+        scanner.nextLine();
+
+        Computer computerToUpdate = computerRepo.getComputerById(computerId);
+        if (computerToUpdate != null) {
+            System.out.println("Computer gefunden. Geben Sie die neuen Daten ein:");
+            System.out.println("id " + computerToUpdate.getId());
+
+            System.out.print("Geben Sie den neuen Hersteller ein (leer lassen, um ihn nicht zu ändern): ");
+            String hersteller = scanner.nextLine();
+            if (!hersteller.isEmpty()) {
+                computerToUpdate.setHersteller(hersteller);
+            }
+
+            System.out.print("Geben Sie das neue Modell ein (leer lassen, um es nicht zu ändern): ");
+            String modell = scanner.nextLine();
+            if (!modell.isEmpty()) {
+                computerToUpdate.setModell(modell);
+            }
+
+            System.out.print("Geben Sie den neuen Arbeitsspeicher ein (leer lassen, um ihn nicht zu ändern): ");
+            String arbeitsspeicher = scanner.nextLine();
+            if (!arbeitsspeicher.isEmpty()) {
+                computerToUpdate.setArbeitsspeicher(arbeitsspeicher);
+            }
+
+            System.out.print("Geben Sie die neue CPU ein (leer lassen, um sie nicht zu ändern): ");
+            String cpu = scanner.nextLine();
+            if (!cpu.isEmpty()) {
+                computerToUpdate.setCpu(cpu);
+            }
+
+            System.out.print("Geben Sie den neuen Massenspeicher ein (leer lassen, um ihn nicht zu ändern): ");
+            String massenspeicher = scanner.nextLine();
+            if (!massenspeicher.isEmpty()) {
+                computerToUpdate.setMassenspeicher(massenspeicher);
+            }
+
+            System.out.print("Geben Sie den neuen Typ ein (leer lassen, um ihn nicht zu ändern): ");
+            String typ = scanner.nextLine();
+            if (!typ.isEmpty()) {
+                computerToUpdate.setTyp(typ);
+            }
+
+            System.out.print("Geben Sie den neuen Einzelpreis ein (leer lassen, um ihn nicht zu ändern): ");
+            String einzelpreisStr = scanner.nextLine();
+            if (!einzelpreisStr.isEmpty()) {
+                double einzelpreis = Double.parseDouble(einzelpreisStr);
+                computerToUpdate.setEinzelpreis(einzelpreis);
+            }
+
+            System.out.println("Schnittstellen aktualisieren (leer lassen, um sie nicht zu ändern):");
+            System.out.print("Geben Sie die Anzahl der neuen USB-Ports ein: ");
+            String anzahlUsbPortsStr = scanner.nextLine();
+            if (!anzahlUsbPortsStr.isEmpty()) {
+                int anzahlUsbPorts = Integer.parseInt(anzahlUsbPortsStr);
+                computerToUpdate.getSchnittstelle().setAnzahlUsbPorts(anzahlUsbPorts);
+            }
+
+            System.out.print("Geben Sie die Anzahl der neuen USB-C-Ports ein: ");
+            String anzahlUsbcPortsStr = scanner.nextLine();
+            if (!anzahlUsbcPortsStr.isEmpty()) {
+                int anzahlUsbcPorts = Integer.parseInt(anzahlUsbcPortsStr);
+                computerToUpdate.getSchnittstelle().setAnzahlUsbcPorts(anzahlUsbcPorts);
+            }
+
+            System.out.print("Geben Sie die Anzahl der neuen HDMI-Ports ein: ");
+            String anzahlHdmiPortsStr = scanner.nextLine();
+            if (!anzahlHdmiPortsStr.isEmpty()) {
+                int anzahlHdmiPorts = Integer.parseInt(anzahlHdmiPortsStr);
+                computerToUpdate.getSchnittstelle().setAnzahlHdmiPorts(anzahlHdmiPorts);
+            }
+
+            System.out.print("Geben Sie die Anzahl der neuen DisplayPort-Ports ein: ");
+            String anzahlDpPortsStr = scanner.nextLine();
+            if (!anzahlDpPortsStr.isEmpty()) {
+                int anzahlDpPorts = Integer.parseInt(anzahlDpPortsStr);
+                computerToUpdate.getSchnittstelle().setAnzahlDpPorts(anzahlDpPorts);
+            }
+
+            System.out.print("Geben Sie die Anzahl der neuen RJ45-Ports ein: ");
+            String anzahlRJ45PortsStr = scanner.nextLine();
+            if (!anzahlRJ45PortsStr.isEmpty()) {
+                int anzahlRJ45Ports = Integer.parseInt(anzahlRJ45PortsStr);
+                computerToUpdate.getSchnittstelle().setAnzahlRJ45Ports(anzahlRJ45Ports);
+            }
+
+            // ComputerRepo aktualisieren
+            computerRepo.update(computerToUpdate);
+
+            System.out.println("Computer aktualisiert.");
+        } else {
+            System.out.println("Kein Computer mit dieser ID gefunden.");
+        }
+    }
+    private void deleteComputer() {
+        System.out.print("Geben Sie den Index des Computers ein, den Sie löschen möchten: ");
+        int index = scanner.nextInt();
+        scanner.nextLine();
+        computerRepo.deleteComputerByIndex(index);
     }
 
 

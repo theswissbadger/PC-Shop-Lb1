@@ -42,7 +42,7 @@ public class KundenRepo implements iKunde {
 
 
     public void update(Kunde kunde) {
-        dbAccess.update(kunde);
+        dbAccess.updateComputer(kunde);
     }
 
     public void deleteByIndex(int index) {

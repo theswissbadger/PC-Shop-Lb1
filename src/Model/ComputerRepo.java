@@ -19,18 +19,35 @@ public class ComputerRepo implements iComputer {
         return dbAccess.getAllComputer();
     }
 
+    public Computer getComputerById(int index){return dbAccess.getComputerByIndex(index);}
+
     @Override
     public void insert(Computer computer) {
         dbAccess.insert(computer);
     }
 
     @Override
-    public void update(Kunde computer) {
-
+    public void update(Computer computer) {
+        dbAccess.updateComputer(computer);
     }
 
     @Override
     public void delete(int computerId) {
 
+    }
+
+    public void deleteComputerByIndex(int index) {
+        ArrayList<Computer> computerList = dbAccess.getAllComputer();
+        if (index >= 0 && index < computerList.size()) {
+            Computer computerToDelete = computerList.get(index);
+
+            dbAccess.deleteComputer(computerToDelete.getId());
+
+
+            computerList.remove(index);
+            System.out.println("Computer erfolgreich gelöscht.");
+        } else {
+            System.out.println("Ungültiger Index. Der Computer konnte nicht gelöscht werden.");
+        }
     }
 }
