@@ -2,6 +2,7 @@ package Model;
 
 import DbAccess.DbAccess;
 import Interfaces.iKunde;
+import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 
@@ -22,13 +23,6 @@ public class KundenRepo implements iKunde {
         return dbAccess.getByIndex(index);
     }
 
-    /*
-    public Kunde getById(String id) {
-        return dbAccess.getById(id);
-    }
-
-     */
-
     public ArrayList<Kunde> getAll() {
         return dbAccess.getAll();
     }
@@ -38,7 +32,9 @@ public class KundenRepo implements iKunde {
     public void delete(int index) {
 
     }
-
+    public Kunde getbyId(ObjectId id){
+        return dbAccess.getById(id);
+    }
 
 
     public void update(Kunde kunde) {

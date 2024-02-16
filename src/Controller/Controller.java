@@ -2,6 +2,8 @@ package Controller;
 
 import Model.*;
 
+import java.sql.SQLOutput;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,7 +41,7 @@ public class Controller {
                     startComputerOptions();
                     break;
                 case 3:
-
+                    startBestellungOptions();
                     break;
                 case 0:
                     running = false;
@@ -459,6 +461,106 @@ public class Controller {
         computerRepo.deleteComputerByIndex(index);
     }
 
+    public void startBestellungOptions() {
+        boolean running = true;
+        while (running) {
+            displayBestellungsMenu();
+            int option = scanner.nextInt();
+            scanner.nextLine();
+            switch (option) {
+                case 1:
+                    // Alle Bestellungen anzeigen
+                    printAllBestellungen();
+                    break;
+                case 2:
+                    // Bestellung nach Index anzeigen
+                    break;
+                case 3:
+                    // Neue Bestelung hinzufügen
+                    addBestellung();
+                    break;
+                case 4:
+                    // Bestellung aktualisieren
+                    break;
+                case 5:
+                    // Bestellung löschen
+                    break;
+                case 6:
+                    running = false;
+                    break;
+                default:
+                    System.out.println("Ungültige Option. Bitte wählen Sie erneut.");
+            }
+        }
+    }
 
+    private void displayBestellungsMenu() {
+        System.out.println("1. Alle Bestellungen anzeigen");
+        System.out.println("2. Bestellung nach ID anzeigen");
+        System.out.println("3. Neue Bestellung hinzufügen");
+        System.out.println("4. Bestellung aktualisieren");
+        System.out.println("5. Bestellung löschen");
+        System.out.println("6. Zurück zur Hauptansicht");
+        System.out.print("Wählen Sie eine Option: ");
+    }
 
+    public void addBestellung() {
+        System.out.println("Welcher Kunde hat die Bestellung getätigt? (Index angeben!)");
+        int kundenIndex = scanner.nextInt();
+
+        Kunde kundeForBestellung = kundenRepo.getByIndex(kundenIndex);
+
+        System.out.println("Geben Sie die Bestellnummer ein: ");
+        int bestellnummer = scanner.nextInt();
+
+        Date bestellDatum = new Date();
+
+        System.out.println("Geben Sie die Bestellpositionen an:");
+
+        ArrayList<Bestellposition> bestellpositionList = new ArrayList<>();
+        double total = 0;
+
+        boolean addMore = true;
+        while (addMore) {
+            System.out.println("Welcher PC wurde bestellt? (Index angeben!)");
+            int computerIndex = scanner.nextInt();
+            Computer computerForBestellung = computerRepo.getComputerById(computerIndex);
+            double preis = computerForBestellung.getEinzelpreis();
+            System.out.println("Wie viele Stücke wurden bestellt?");
+            int stueckzahl = scanner.nextInt();
+
+            Bestellposition bestellposition = new Bestellposition(computerForBestellung, preis, stueckzahl);
+            bestellpositionList.add(bestellposition);
+
+            total += preis * stueckzahl;
+
+            System.out.println("Möchten Sie eine weitere Bestellposition hinzufügen? (ja/nein)");
+            String response = scanner.next();
+            addMore = response.equalsIgnoreCase("ja");
+
+        }
+
+        Bestellung bestellung = new Bestellung(bestellnummer, bestellDatum, total, bestellpositionList, kundeForBestellung);
+        bestellungRepo.addBestellung(bestellung);
+    }
+
+    public void printAllBestellungen() {
+
+        ArrayList<Bestellung> bestellungen = bestellungRepo.getAllBestellungen();
+        for (Bestellung bestellung : bestellungen) {
+            System.out.println("---------------------------------------------------");
+            System.out.println("Bestellnummer: " + bestellung.getBestellnummer());
+            System.out.println("Bestelldatum: " + bestellung.getBestelldatum());
+            System.out.println("Total: " + bestellung.getTotal());
+            System.out.println("Kunde: " + bestellung.getKunde().getNachname() + " " + bestellung.getKunde().getVorname());
+            System.out.println("Bestellpositionen:");
+            for (Bestellposition position : bestellung.getBestellPositionen()) {
+                System.out.println("\tComputer: " + position.getComputer().getModell() + " " + position.getComputer().getHersteller());
+                System.out.println("\tPreis: " + position.getPreis());
+                System.out.println("\tStückzahl: " + position.getStueckzahl());
+                System.out.println();
+
+            }
+        }
+    }
 }

@@ -1,18 +1,24 @@
 package DbAccess;
 
-import Model.Adresse;
-import Model.Computer;
-import Model.Kunde;
-import Model.Schnittstelle;
+import Model.*;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
 import org.bson.Document;
+import org.bson.codecs.configuration.CodecProvider;
+import org.bson.codecs.configuration.CodecRegistry;
+import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static com.mongodb.MongoClient.getDefaultCodecRegistry;
+import static javax.management.Query.eq;
+import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
+import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 public class DbAccess {
     private MongoCollection<Document> collection;
@@ -47,6 +53,17 @@ public class DbAccess {
                         .append("plz", kunde.getAdresse().getPlz())
                         .append("ort", kunde.getAdresse().getOrt()));
         collection.insertOne(doc);
+    }
+
+    public Kunde getById(ObjectId kundeId) {
+        MongoCollection<Document> kundenCollection = database.getCollection("Kunde");
+        Document query = new Document("_id", kundeId);
+        Document kundeDoc = kundenCollection.find(query).first();
+        if (kundeDoc == null) {
+            return documentToKunde(kundeDoc);
+        } else {
+            return null;
+        }
     }
 
     public Kunde getByIndex(int index) {
@@ -208,10 +225,68 @@ public class DbAccess {
         collection.updateOne(Filters.eq("_id", computer.getId()), new Document("$set", doc));
     }
 
+    // Bestellungen;
+    public void addBestellung(Bestellung bestellung) {
+        Document bestellungDoc = new Document("bestellnummer", bestellung.getBestellnummer())
+                .append("bestelldatum", bestellung.getBestelldatum())
+                .append("total", bestellung.getTotal())
+                .append("kundenId", bestellung.getKunde().getId())
+                .append("vorname", bestellung.getKunde().getVorname())
+                .append("nachname", bestellung.getKunde().getNachname());
+
+
+        ArrayList<Document> bestellPositionenDocs = new ArrayList<>();
+        for (Bestellposition position : bestellung.getBestellPositionen()) {
+            Document positionDoc = new Document("computer", position.getComputer().getId())
+                    .append("hersteller", position.getComputer().getHersteller())
+                    .append("modell", position.getComputer().getModell())
+                    .append("preis", position.getPreis())
+                    .append("stueckzahl", position.getStueckzahl());
+            bestellPositionenDocs.add(positionDoc);
+        }
+        bestellungDoc.append("bestellPositionen", bestellPositionenDocs);
+
+        collection.insertOne(bestellungDoc);
+    }
+
+    public ArrayList<Bestellung> getAllBestellungen() {
+        ArrayList<Bestellung> bestellungen = new ArrayList<>();
+        try (MongoCursor<Document> cursor = collection.find().iterator()) {
+            while (cursor.hasNext()) {
+                Document bestellungDoc = cursor.next();
+                bestellungen.add(documentToBestellung(bestellungDoc));
+            }
+        }
+        return bestellungen;
+    }
+
+    private Bestellung documentToBestellung(Document bestellungDoc) {
+        int bestellnummer = bestellungDoc.getInteger("bestellnummer");
+        Date bestelldatum = bestellungDoc.getDate("bestelldatum");
+        double total = bestellungDoc.getDouble("total");
+
+        ObjectId kundeId = bestellungDoc.getObjectId("kunde");
+        String nachname = bestellungDoc.getString("nachname");
+        String vorname = bestellungDoc.getString("vorname");
+
+        Kunde kunde = new Kunde(kundeId, nachname, vorname);
+
+        ArrayList<Bestellposition> bestellPositionen = new ArrayList<>();
+        ArrayList<Document> positionenDocs = bestellungDoc.get("bestellPositionen", ArrayList.class);
+
+        if (positionenDocs != null) {
+            for (Document positionDoc : positionenDocs) {
+                String hersteller = positionDoc.getString("hersteller");
+                String modell = positionDoc.getString("modell");
+                double preis = positionDoc.getDouble("preis");
+                int stueckzahl = positionDoc.getInteger("stueckzahl");
+
+                Computer computer = new Computer(hersteller, modell);
+                Bestellposition bestellposition = new Bestellposition(computer, preis, stueckzahl);
+                bestellPositionen.add(bestellposition);
+            }
+        }
+
+        return new Bestellung(bestellnummer, bestelldatum, total, bestellPositionen, kunde);
+    }
 }
-
-
-
-
-
-

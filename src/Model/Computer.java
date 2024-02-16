@@ -15,6 +15,11 @@ public class Computer {
     private Schnittstelle schnittstelle;
     private Bestellposition bestellposition;
 
+    public Computer(String hersteller, String modell) {
+        this.hersteller = hersteller;
+        this.modell = modell;
+    }
+
     public Computer(ObjectId id, String hersteller, String modell, String arbeitsspeicher, String cpu, String massenspeicher, String typ, double einzelpreis, Schnittstelle schnittstelle) {
         this.id = id;
         this.hersteller = hersteller;
@@ -27,8 +32,6 @@ public class Computer {
         this.schnittstelle = schnittstelle;
 
     }
-
-
 
     public Computer(String hersteller, String modell, String arbeitsspeicher, String cpu, String massenspeicher, String typ, double einzelpreis, Schnittstelle schnittstelle) {
         this.hersteller = hersteller;

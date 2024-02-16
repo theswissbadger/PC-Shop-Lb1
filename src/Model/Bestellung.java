@@ -1,37 +1,56 @@
 package Model;
 
+import org.bson.types.ObjectId;
+
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Bestellung {
-    private int bestellungId;
-    private String bestellnummer;
+    private ObjectId bestellungId;
+    private int bestellnummer;
     private Date bestelldatum;
     private double total;
+    private ArrayList<Bestellposition> bestellPositionen;
     private Kunde kunde;
 
-    public Bestellung() {
+    public Bestellung(int bestellnummer, Date bestelldatum, double total, ArrayList<Bestellposition> bestellPositionen, Kunde kunde) {
+        this.bestellnummer = bestellnummer;
+        this.bestelldatum = bestelldatum;
+        this.total = total;
+        this.bestellPositionen = bestellPositionen;
+        this.kunde = kunde;
     }
 
-    public Bestellung(String bestellnummer, Date bestelldatum, double total, Kunde kunde) {
+    public Bestellung(ObjectId bestellungId, int bestellnummer, Date bestelldatum, double total, Kunde kunde) {
+        this.bestellungId = bestellungId;
         this.bestellnummer = bestellnummer;
         this.bestelldatum = bestelldatum;
         this.total = total;
         this.kunde = kunde;
     }
 
-    public int getBestellungId() {
+
+    public ArrayList<Bestellposition> getBestellPositionen() {
+        return bestellPositionen;
+    }
+
+    public void setBestellPositionen(ArrayList<Bestellposition> bestellPositionen) {
+        this.bestellPositionen = bestellPositionen;
+    }
+
+    public ObjectId getBestellungId() {
         return bestellungId;
     }
 
-    public void setBestellungId(int bestellungId) {
+    public void setBestellungId(ObjectId bestellungId) {
         this.bestellungId = bestellungId;
     }
 
-    public String getBestellnummer() {
+    public int getBestellnummer() {
         return bestellnummer;
     }
 
-    public void setBestellnummer(String bestellnummer) {
+    public void setBestellnummer(int bestellnummer) {
         this.bestellnummer = bestellnummer;
     }
 

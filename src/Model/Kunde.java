@@ -43,9 +43,11 @@ public class Kunde {
         this.adresse = adresse;
     }
 
-
-
-
+    public Kunde(ObjectId id, String nachname, String vorname) {
+        this.id = id;
+        this.nachname = nachname;
+        this.vorname = vorname;
+    }
 
     public ObjectId getId() {
         return id;

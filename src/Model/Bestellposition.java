@@ -3,17 +3,19 @@ package Model;
 public class Bestellposition {
     private Computer computer;
     private double preis;
-    private int stückzahl;
+    private int stueckzahl;
 
-    public Bestellposition(Computer computer, double preis, int stückzahl) {
+    public Bestellposition(Computer computer, double preis, int stueckzahl) {
         this.computer = computer;
         this.preis = preis;
-        this.stückzahl = stückzahl;
+        this.stueckzahl = stueckzahl;
     }
 
     public Bestellposition() {
 
     }
+
+
 
     public Computer getComputer() {
         return computer;
@@ -31,11 +33,11 @@ public class Bestellposition {
         this.preis = preis;
     }
 
-    public int getStückzahl() {
-        return stückzahl;
+    public int getStueckzahl() {
+        return stueckzahl;
     }
 
-    public void setStückzahl(int stückzahl) {
-        this.stückzahl = stückzahl;
+    public void setStueckzahl(int stueckzahl) {
+        this.stueckzahl = stueckzahl;
     }
 }
