@@ -29,6 +29,13 @@ public class Bestellung {
         this.kunde = kunde;
     }
 
+    public Bestellung(ObjectId id,Date bestelldatum,double total, ArrayList<Bestellposition> bestellPositionen, Kunde kunde) {
+        this.bestellungId = id;
+        this.bestelldatum = bestelldatum;
+        this.total = total;
+        this.bestellPositionen = bestellPositionen;
+        this.kunde = kunde;
+    }
 
     public ArrayList<Bestellposition> getBestellPositionen() {
         return bestellPositionen;

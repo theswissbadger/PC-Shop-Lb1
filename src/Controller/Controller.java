@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.*;
+import View.MenuView;
 
 import java.sql.SQLOutput;
 import java.text.DecimalFormat;
@@ -17,10 +18,13 @@ public class Controller {
     private BestellungRepo bestellungRepo;
     private Scanner scanner;
 
+    private MenuView menuView;
+
     public Controller() {
         this.bestellungRepo = new BestellungRepo();
         this.kundenRepo = new KundenRepo();
         this.computerRepo = new ComputerRepo();
+        this.menuView = new MenuView();
         this.scanner = new Scanner(System.in);
     }
 
@@ -29,7 +33,7 @@ public class Controller {
         boolean running = true;
 
         while (running) {
-            displayMenu();
+            menuView.displayMenu();
             int option = scanner.nextInt();
             scanner.nextLine();
 
@@ -54,19 +58,10 @@ public class Controller {
         scanner.close();
     }
 
-    public static void displayMenu() {
-        System.out.println("Bitte wählen Sie eine Option:");
-        System.out.println("1. Kunden anzeigen");
-        System.out.println("2. Computer anzeigen");
-        System.out.println("3. Bestellpositionen anzeigen");
-        System.out.println("0. Programm beenden");
-        System.out.print("Ihre Auswahl: ");
-    }
-
     public void startCustomerOptions() {
         boolean running = true;
         while (running) {
-            displayCustomerMenu();
+            menuView.displayCustomerMenu();
             int option = scanner.nextInt();
             scanner.nextLine();
             switch (option) {
@@ -94,15 +89,76 @@ public class Controller {
         }
     }
 
-    private void displayCustomerMenu() {
-        System.out.println("1. Alle Kunden anzeigen");
-        System.out.println("2. Kunden nach ID anzeigen");
-        System.out.println("3. Neuen Kunden hinzufügen");
-        System.out.println("4. Kunden aktualisieren");
-        System.out.println("5. Kunden löschen");
-        System.out.println("6. Zurück zur Hauptansicht");
-        System.out.print("Wählen Sie eine Option: ");
+    public void startComputerOptions() {
+        boolean running = true;
+        while (running) {
+            menuView.displayComputerMenu();
+            int option = scanner.nextInt();
+            scanner.nextLine();
+            switch (option) {
+                case 1:
+                    displayAllComputers();
+                    break;
+                case 2:
+                    // Computer via ID ausgeben
+                    displayComputerbyId();
+                    break;
+                case 3:
+                    // Methode Computer hinzufügen
+                    addNewComputer();
+
+                    break;
+                case 4:
+                    // Methode Computer aktualisieren
+                    updateComputer();
+                    break;
+                case 5:
+                    // Methode Computer löschen
+                    deleteComputer();
+                    break;
+                case 6:
+                    running = false;
+                    break;
+                default:
+                    System.out.println("Ungültige Option. Bitte wählen Sie erneut.");
+            }
+        }
     }
+
+    public void startBestellungOptions() {
+        boolean running = true;
+        while (running) {
+            menuView.displayBestellungsMenu();
+            int option = scanner.nextInt();
+            scanner.nextLine();
+            switch (option) {
+                case 1:
+                    // Alle Bestellungen anzeigen
+                    printAllBestellungen();
+                    break;
+                case 2:
+                    // Bestellung nach Index anzeigen
+                    break;
+                case 3:
+                    // Neue Bestelung hinzufügen
+                    addBestellung();
+                    break;
+                case 4:
+                    // Bestellung aktualisieren
+                    break;
+                case 5:
+                    // Bestellung löschen
+                    deleteBestellung();
+                    break;
+                case 6:
+                    running = false;
+                    break;
+                default:
+                    System.out.println("Ungültige Option. Bitte wählen Sie erneut.");
+            }
+        }
+    }
+
 
     private void displayAllCustomers() {
         ArrayList<Kunde> kunden = kundenRepo.getAll();
@@ -255,51 +311,6 @@ public class Controller {
         System.out.println("Kunde gelöscht.");
     }
 
-    public void startComputerOptions() {
-        boolean running = true;
-        while (running) {
-            displayComputerMenu();
-            int option = scanner.nextInt();
-            scanner.nextLine();
-            switch (option) {
-                case 1:
-                    displayAllComputers();
-                    break;
-                case 2:
-                    // Computer via ID ausgeben
-                    displayComputerbyId();
-                    break;
-                case 3:
-                    // Methode Computer hinzufügen
-                    addNewComputer();
-
-                    break;
-                case 4:
-                    // Methode Computer aktualisieren
-                    updateComputer();
-                    break;
-                case 5:
-                    // Methode Computer löschen
-                    deleteComputer();
-                    break;
-                case 6:
-                    running = false;
-                    break;
-                default:
-                    System.out.println("Ungültige Option. Bitte wählen Sie erneut.");
-            }
-        }
-    }
-    private void displayComputerMenu() {
-        System.out.println("1. Alle Computer anzeigen");
-        System.out.println("2. Computer nach Index anzeigen");
-        System.out.println("3. Neuen Computer erfassen");
-        System.out.println("4. Computer aktualisieren");
-        System.out.println("5. Computer löschen");
-        System.out.println("6. Zurück zum Hauptmenü");
-        System.out.print("Wählen Sie eine Option: ");
-    }
-
     private void addNewComputer() {
         System.out.print("Geben Sie den Hersteller ein: ");
         String hersteller = scanner.nextLine();
@@ -365,7 +376,6 @@ public class Controller {
         Computer computerToUpdate = computerRepo.getComputerById(computerId);
         if (computerToUpdate != null) {
             System.out.println("Computer gefunden. Geben Sie die neuen Daten ein:");
-            System.out.println("id " + computerToUpdate.getId());
 
             System.out.print("Geben Sie den neuen Hersteller ein (leer lassen, um ihn nicht zu ändern): ");
             String hersteller = scanner.nextLine();
@@ -461,49 +471,6 @@ public class Controller {
         computerRepo.deleteComputerByIndex(index);
     }
 
-    public void startBestellungOptions() {
-        boolean running = true;
-        while (running) {
-            displayBestellungsMenu();
-            int option = scanner.nextInt();
-            scanner.nextLine();
-            switch (option) {
-                case 1:
-                    // Alle Bestellungen anzeigen
-                    printAllBestellungen();
-                    break;
-                case 2:
-                    // Bestellung nach Index anzeigen
-                    break;
-                case 3:
-                    // Neue Bestelung hinzufügen
-                    addBestellung();
-                    break;
-                case 4:
-                    // Bestellung aktualisieren
-                    break;
-                case 5:
-                    // Bestellung löschen
-                    break;
-                case 6:
-                    running = false;
-                    break;
-                default:
-                    System.out.println("Ungültige Option. Bitte wählen Sie erneut.");
-            }
-        }
-    }
-
-    private void displayBestellungsMenu() {
-        System.out.println("1. Alle Bestellungen anzeigen");
-        System.out.println("2. Bestellung nach ID anzeigen");
-        System.out.println("3. Neue Bestellung hinzufügen");
-        System.out.println("4. Bestellung aktualisieren");
-        System.out.println("5. Bestellung löschen");
-        System.out.println("6. Zurück zur Hauptansicht");
-        System.out.print("Wählen Sie eine Option: ");
-    }
-
     public void addBestellung() {
         System.out.println("Welcher Kunde hat die Bestellung getätigt? (Index angeben!)");
         int kundenIndex = scanner.nextInt();
@@ -562,5 +529,11 @@ public class Controller {
 
             }
         }
+    }
+    private void deleteBestellung() {
+        System.out.print("Geben Sie den Index der Bestellung ein, den Sie löschen möchten: ");
+        int index = scanner.nextInt();
+        scanner.nextLine();
+        bestellungRepo.deleteBestellungByIndex(index);
     }
 }

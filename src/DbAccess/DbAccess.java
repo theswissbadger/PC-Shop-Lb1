@@ -261,6 +261,7 @@ public class DbAccess {
     }
 
     private Bestellung documentToBestellung(Document bestellungDoc) {
+        ObjectId id = bestellungDoc.getObjectId("_id");
         int bestellnummer = bestellungDoc.getInteger("bestellnummer");
         Date bestelldatum = bestellungDoc.getDate("bestelldatum");
         double total = bestellungDoc.getDouble("total");
@@ -281,12 +282,19 @@ public class DbAccess {
                 double preis = positionDoc.getDouble("preis");
                 int stueckzahl = positionDoc.getInteger("stueckzahl");
 
+
                 Computer computer = new Computer(hersteller, modell);
                 Bestellposition bestellposition = new Bestellposition(computer, preis, stueckzahl);
                 bestellPositionen.add(bestellposition);
             }
         }
 
-        return new Bestellung(bestellnummer, bestelldatum, total, bestellPositionen, kunde);
+        return new Bestellung(id, bestelldatum, total, bestellPositionen, kunde);
     }
+
+    public void deleteBestellung(ObjectId id) {
+        collection.deleteOne(Filters.eq("_id", id));
+    }
+
+
 }
