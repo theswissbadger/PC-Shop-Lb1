@@ -313,5 +313,32 @@ public class DbAccess {
         return null;
     }
 
+    public void updateBestellung(Bestellung bestellung) {
+        Document query = new Document("_id", bestellung.getBestellungId());
+
+        Document bestellungDoc = new Document("bestellnummer", bestellung.getBestellnummer())
+                .append("bestelldatum", bestellung.getBestelldatum())
+                .append("total", bestellung.getTotal())
+                .append("kundenId", bestellung.getKunde().getId())
+                .append("vorname", bestellung.getKunde().getVorname())
+                .append("nachname", bestellung.getKunde().getNachname());
+
+        ArrayList<Document> bestellPositionenDocs = new ArrayList<>();
+        for (Bestellposition position : bestellung.getBestellPositionen()) {
+            Document positionDoc = new Document("computer", position.getComputer().getId())
+                    .append("hersteller", position.getComputer().getHersteller())
+                    .append("modell", position.getComputer().getModell())
+                    .append("preis", position.getPreis())
+                    .append("stueckzahl", position.getStueckzahl());
+            bestellPositionenDocs.add(positionDoc);
+        }
+        bestellungDoc.append("bestellPositionen", bestellPositionenDocs);
+
+        Document updateQuery = new Document("$set", bestellungDoc);
+
+        collection.updateOne(query, updateQuery);
+    }
+
+
 
 }

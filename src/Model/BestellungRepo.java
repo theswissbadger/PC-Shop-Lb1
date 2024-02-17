@@ -40,4 +40,8 @@ public class BestellungRepo implements iBestellungen {
         return dbAccess.getBestellungByIndex(index);
     }
 
+    public void updateBestellung(Bestellung bestellung){
+        dbAccess.updateBestellung(bestellung);
+    }
+
 }

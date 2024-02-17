@@ -2,6 +2,7 @@ package Controller;
 
 import Model.*;
 import View.MenuView;
+import org.bson.types.ObjectId;
 
 import java.sql.SQLOutput;
 import java.text.DecimalFormat;
@@ -20,6 +21,9 @@ public class Controller {
 
     private MenuView menuView;
 
+    //Konstruktor instanziert jeweils die neuen Klassen, um sie im Controller benutzen zu können.
+
+
     public Controller() {
         this.bestellungRepo = new BestellungRepo();
         this.kundenRepo = new KundenRepo();
@@ -28,6 +32,7 @@ public class Controller {
         this.scanner = new Scanner(System.in);
     }
 
+    // printMenu zeigt das Hauptmenü an
     public void printMenu() {
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
@@ -58,6 +63,7 @@ public class Controller {
         scanner.close();
     }
 
+    // startCustomerOptions startet die Kundenoptionen, um die Kundendaten zu ändern
     public void startCustomerOptions() {
         boolean running = true;
         while (running) {
@@ -89,6 +95,7 @@ public class Controller {
         }
     }
 
+    // startComputerOptions startet die Computeroptionen, um alle Daten eines Computers zu ändern.
     public void startComputerOptions() {
         boolean running = true;
         while (running) {
@@ -146,6 +153,7 @@ public class Controller {
                     break;
                 case 4:
                     // Bestellung aktualisieren
+                    updateBestellungViaConsole();
                     break;
                 case 5:
                     // Bestellung löschen
@@ -296,7 +304,7 @@ public class Controller {
                 kundeToUpdate.getAdresse().setOrt(ort);
             }
 
-            // KundenRepo aktualisieren
+
             kundenRepo.update(kundeToUpdate);
             System.out.println("Kunde aktualisiert.");
         } else {
@@ -457,7 +465,7 @@ public class Controller {
                 computerToUpdate.getSchnittstelle().setAnzahlRJ45Ports(anzahlRJ45Ports);
             }
 
-            // ComputerRepo aktualisieren
+
             computerRepo.update(computerToUpdate);
 
             System.out.println("Computer aktualisiert.");
@@ -549,4 +557,79 @@ public class Controller {
             System.out.println("Keine Bestellung mit dieser ID gefunden.");
         }
     }
+
+    public void updateBestellungViaConsole() {
+        Scanner scanner = new Scanner(System.in);
+
+
+        System.out.print("Geben Sie den Index der zu aktualisierenden Bestellung ein: ");
+        int index;
+        if (scanner.hasNextInt()) {
+            index = scanner.nextInt();
+        } else {
+            System.out.println("Ungültige Eingabe für den Index. Bitte geben Sie eine ganze Zahl ein.");
+            return;
+        }
+        scanner.nextLine();
+
+
+        Bestellung bestellung = bestellungRepo.getBestellungbyIndex(index);
+        if (bestellung != null) {
+            System.out.println("Bestellung gefunden. Geben Sie die neuen Daten ein:");
+
+
+            System.out.print("Geben Sie die neue Bestellnummer ein (leer lassen, um sie nicht zu ändern): ");
+            String neueBestellnummerStr = scanner.nextLine();
+            if (!neueBestellnummerStr.isEmpty()) {
+                try {
+                    int neueBestellnummer = Integer.parseInt(neueBestellnummerStr);
+                    bestellung.setBestellnummer(neueBestellnummer);
+                } catch (NumberFormatException e) {
+                    System.out.println("Ungültige Eingabe für die Bestellnummer. Bitte geben Sie eine ganze Zahl ein.");
+                    return;
+                }
+            }
+
+
+            System.out.print("Geben Sie den neuen Gesamtbetrag ein (leer lassen, um ihn nicht zu ändern): ");
+            String neuerTotalStr = scanner.nextLine();
+            if (!neuerTotalStr.isEmpty()) {
+                try {
+                    double neuerTotal = Double.parseDouble(neuerTotalStr);
+                    bestellung.setTotal(neuerTotal);
+                } catch (NumberFormatException e) {
+                    System.out.println("Ungültige Eingabe für den Gesamtbetrag. Bitte geben Sie eine Zahl ein.");
+                    return;
+                }
+            }
+
+
+            System.out.print("Geben Sie die ID des neuen Kunden ein (leer lassen, um ihn nicht zu ändern): ");
+            String kundenIndexStr = scanner.nextLine();
+            if (!kundenIndexStr.isEmpty()) {
+                try {
+                    int kundenIndex = Integer.parseInt(kundenIndexStr);
+                    Kunde neuerKunde = kundenRepo.getByIndex(kundenIndex);
+                    if (neuerKunde != null) {
+                        bestellung.setKunde(neuerKunde);
+                    } else {
+                        System.out.println("Kunde mit dieser ID nicht gefunden. Kundeninformationen bleiben unverändert.");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Ungültige Eingabe für die Kunden-ID. Bitte geben Sie eine ganze Zahl ein.");
+                    return;
+                }
+            }
+
+            bestellungRepo.updateBestellung(bestellung);
+            System.out.println("Bestellung erfolgreich aktualisiert.");
+        } else {
+            System.out.println("Keine Bestellung mit diesem Index gefunden.");
+        }
+    }
+
+
+
+
+
 }
