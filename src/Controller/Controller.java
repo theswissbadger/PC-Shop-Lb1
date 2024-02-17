@@ -138,6 +138,7 @@ public class Controller {
                     break;
                 case 2:
                     // Bestellung nach Index anzeigen
+                    displayBestellungByIndex();
                     break;
                 case 3:
                     // Neue Bestelung hinzufügen
@@ -535,5 +536,17 @@ public class Controller {
         int index = scanner.nextInt();
         scanner.nextLine();
         bestellungRepo.deleteBestellungByIndex(index);
+    }
+
+    private void displayBestellungByIndex(){
+        System.out.print("Geben Sie den Index an: ");
+        int index = scanner.nextInt();
+        Bestellung bestellung = bestellungRepo.getBestellungbyIndex(index);
+
+        if (bestellung != null) {
+            System.out.println(bestellung);
+        } else {
+            System.out.println("Keine Bestellung mit dieser ID gefunden.");
+        }
     }
 }

@@ -36,6 +36,24 @@ public class Bestellung {
         this.bestellPositionen = bestellPositionen;
         this.kunde = kunde;
     }
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        result.append("---------------------------------------------------\n");
+        result.append("Bestellnummer: ").append(bestellnummer).append("\n");
+        result.append("Bestelldatum: ").append(bestelldatum).append("\n");
+        result.append("Total: ").append(total).append("\n");
+        result.append("Kunde: ").append(kunde.getNachname()).append(" ").append(kunde.getVorname()).append("\n");
+        result.append("Bestellpositionen:\n");
+        for (Bestellposition position : bestellPositionen) {
+            result.append("\tComputer: ").append(position.getComputer().getModell()).append(" ").append(position.getComputer().getHersteller()).append("\n");
+            result.append("\tPreis: ").append(position.getPreis()).append("\n");
+            result.append("\tStückzahl: ").append(position.getStueckzahl()).append("\n\n");
+        }
+        return result.toString();
+    }
+
+
 
     public ArrayList<Bestellposition> getBestellPositionen() {
         return bestellPositionen;

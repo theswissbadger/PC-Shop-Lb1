@@ -296,5 +296,22 @@ public class DbAccess {
         collection.deleteOne(Filters.eq("_id", id));
     }
 
+    public Bestellung getBestellungByIndex(int index) {
+        MongoCursor<Document> cursor = collection.find().iterator();
+        try {
+            int currentIndex = 0;
+            while (cursor.hasNext()) {
+                Document doc = cursor.next();
+                if (currentIndex == index) {
+                    return documentToBestellung(doc);
+                }
+                currentIndex++;
+            }
+        } finally {
+            cursor.close();
+        }
+        return null;
+    }
+
 
 }

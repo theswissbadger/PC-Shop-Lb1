@@ -36,5 +36,8 @@ public class BestellungRepo implements iBestellungen {
             System.out.println("Ungültiger Index. Die Bestellung konnte nicht gelöscht werden.");
         }
     }
+    public Bestellung getBestellungbyIndex(int index){
+        return dbAccess.getBestellungByIndex(index);
+    }
 
 }
