@@ -13,7 +13,6 @@ public class ComputerRepo implements iComputer {
         this.dbAccess.connectDb("PC-Shop", "Computer");
     }
 
-
     @Override
     public ArrayList<Computer> getAllComputer() {
         return dbAccess.getAllComputer();

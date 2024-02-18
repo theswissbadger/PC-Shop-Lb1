@@ -7,7 +7,6 @@ import java.util.Date;
 
 public class Kunde {
     private ObjectId id;
-    private String kundenId;
     private String geschlecht;
     private String nachname;
     private String vorname;
@@ -53,19 +52,9 @@ public class Kunde {
         return id;
     }
 
-    public void setId(ObjectId id) {
-        this.id = id;
-    }
-
-    public Kunde(String geschlecht, String nachname, String vorname, String telefon, String email, String sprache, Date geburtsdatum) {
-    }
-
-
-
     public String toString() {
-        return "Kunde: " + vorname + " " + nachname + " identifiziert sich als: " + geschlecht + "\n----------------------------------------------------------------------";
+        return "Kunde: " + nachname + " " + vorname + " E-Mail: " + email + "\n----------------------------------------------------------------------";
     }
-
 
     public String getGeschlecht() {
         return geschlecht;
@@ -130,6 +119,5 @@ public class Kunde {
     public void setAdresse(Adresse adresse) {
         this.adresse = adresse;
     }
-
 
 }

@@ -9,6 +9,7 @@ public interface iBestellungen {
     ArrayList<Bestellung> getAllBestellungen();
     Bestellung getBestellungbyIndex(int index);
     void deleteBestellungByIndex(int index);
+    void updateBestellung(Bestellung bestellung);
 
 
 }

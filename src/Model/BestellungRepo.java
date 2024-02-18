@@ -29,17 +29,19 @@ public class BestellungRepo implements iBestellungen {
             Bestellung bestellungToDelete = bestellungen.get(index);
             bestellungen.remove(index);
             ObjectId id = bestellungToDelete.getBestellungId();
-            // Löschen Sie die Bestellung aus der Datenbank
+
             dbAccess.deleteBestellung(id);
             System.out.println("Bestellung erfolgreich gelöscht.");
         } else {
             System.out.println("Ungültiger Index. Die Bestellung konnte nicht gelöscht werden.");
         }
     }
+    @Override
     public Bestellung getBestellungbyIndex(int index){
         return dbAccess.getBestellungByIndex(index);
     }
 
+    @Override
     public void updateBestellung(Bestellung bestellung){
         dbAccess.updateBestellung(bestellung);
     }

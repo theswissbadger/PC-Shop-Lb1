@@ -15,8 +15,6 @@ public class Bestellposition {
 
     }
 
-
-
     public Computer getComputer() {
         return computer;
     }

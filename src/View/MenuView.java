@@ -46,7 +46,4 @@ public class MenuView {
         System.out.println("0. Programm beenden");
         System.out.print("Ihre Auswahl: ");
     }
-
-
-
 }

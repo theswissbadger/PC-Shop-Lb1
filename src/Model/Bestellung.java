@@ -40,7 +40,6 @@ public class Bestellung {
     public String toString() {
         StringBuilder result = new StringBuilder();
         result.append("---------------------------------------------------\n");
-        result.append("Bestellnummer: ").append(bestellnummer).append("\n");
         result.append("Bestelldatum: ").append(bestelldatum).append("\n");
         result.append("Total: ").append(total).append("\n");
         result.append("Kunde: ").append(kunde.getNachname()).append(" ").append(kunde.getVorname()).append("\n");

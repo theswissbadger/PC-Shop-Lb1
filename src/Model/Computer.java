@@ -46,14 +46,15 @@ public class Computer {
 
     @Override
     public String toString() {
-        return "Computer" +
-                ", hersteller='" + hersteller + '\'' +
-                ", modell='" + modell + '\'' +
-                ", arbeitsspeicher='" + arbeitsspeicher + '\'' +
-                ", cpu='" + cpu + '\'' +
-                ", massenspeicher='" + massenspeicher + '\'' +
-                ", typ='" + typ + '\'' +
-                ", einzelpreis=" + einzelpreis
+        return
+                " Hersteller: " + hersteller +
+                ", Modell: " + modell +
+                ", Arbeitsspeicher: " + arbeitsspeicher +
+                ", Cpu: " + cpu + '\'' +
+                ", Massenspeicher: " + massenspeicher +
+                ", Typ: " + typ  +
+                ", Einzelpreis: " + einzelpreis
+                + "\n----------------------------------------------------------------------"
                 ;
     }
 
